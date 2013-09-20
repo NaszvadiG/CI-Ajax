@@ -45,24 +45,66 @@
 | the active record class
 */
 
-$active_group = 'default';
+$active_group = 'mongo';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
-$db['default']['dbdriver'] = 'mysql';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
+$db['mysql']['hostname'] = 'localhost';
+$db['mysql']['username'] = 'root';
+$db['mysql']['password'] = '';
+$db['mysql']['database'] = 'appota';
+$db['mysql']['dbdriver'] = 'mysql';
+$db['mysql']['dbprefix'] = '';
+$db['mysql']['pconnect'] = TRUE;
+$db['mysql']['db_debug'] = TRUE;
+$db['mysql']['cache_on'] = FALSE;
+$db['mysql']['cachedir'] = '';
+$db['mysql']['char_set'] = 'utf8';
+$db['mysql']['dbcollat'] = 'utf8_general_ci';
+$db['mysql']['swap_pre'] = '';
+$db['mysql']['autoinit'] = TRUE;
+$db['mysql']['stricton'] = FALSE;
+
+/* Configure for mongodb */
+$db['mongo']['hostname'] = 'localhost';
+$db['mongo']['username'] = '';
+$db['mongo']['password'] = '';
+$db['mongo']['database'] = 'advertiser';
+$db['mongo']['dbdriver'] = 'mongo';
+$db['mongo']['port']     = '27017';
+$db['mongo']['write_concern'] = 1;
+$db['mongo']['db_debug'] = TRUE;
+$db['mongo']['autoinit'] = TRUE;
+$db['mongo']['connect'] = TRUE;
+$db['mongo']['ai_collection'] = 'mongo_autoincrement';
+
+// Mongo appota
+$db['mongo_appota']['hostname'] = 'localhost';
+$db['mongo_appota']['username'] = '';
+$db['mongo_appota']['password'] = '';
+$db['mongo_appota']['database'] = 'appota';
+$db['mongo_appota']['dbdriver'] = 'mongo';
+// $db['mongo_appota']['port']     = '27017';
+$db['mongo_appota']['write_concern'] = 1;
+$db['mongo_appota']['db_debug'] = TRUE;
+$db['mongo_appota']['autoinit'] = TRUE;
+$db['mongo_appota']['connect'] = TRUE;
+$db['mongo_appota']['ai_collection'] = 'mongo_autoincrement';
+
+
+// Mongo ReplicaSet
+$db['rs']['replicaSet'] = 'rs';
+$db['rs']['readPreference'] = '';
+$db['rs']['readPreferenceTags'] = '';
+$db['rs']['hostname'] = 'localhost:27020,localhost:27021'; // host1[:port1][,host2[:port2],...]
+$db['rs']['username'] = '';
+$db['rs']['password'] = '';
+$db['rs']['database'] = 'test';
+$db['rs']['dbdriver'] = 'mongo';
+$db['rs']['write_concern'] = 1;
+$db['rs']['db_debug'] = TRUE;
+$db['rs']['autoinit'] = TRUE;
+$db['rs']['connect'] = TRUE;
+$db['rs']['ai_collection'] = 'mongo_autoincrement';
 
 
 /* End of file database.php */

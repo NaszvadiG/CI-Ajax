@@ -12,7 +12,8 @@ class Campaigns extends CI_Controller{
     }
 
     public function show(){
-        $this->load->view('campaigns/show_view');
+        $data['view'] = 'campaigns/show_view';
+        $this->load->view('index_view',$data);
     }
 }
 ?>
