@@ -10,7 +10,7 @@ class Campaigns extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model('mongo_model');
-        $this->load->library('pagination_lib');
+        $this->load->library('paginate');
     }
 
     public function show(){
@@ -41,6 +41,7 @@ class Campaigns extends CI_Controller{
         $data['info'] = $this->mongo_model->get_campaign('','campaigns',$query,$limit,$start_from);
         $data['start_from'] = $start_from;
         $data['limit'] = $limit;
+        $data['page_nav'] = $this->paginate->pagenav($total,$limit,$start_from);
         //get profile name with campaign
         if(count($data['info'])>0){
             foreach ($data['info'] as $rs) {

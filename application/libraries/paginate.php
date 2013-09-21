@@ -42,4 +42,68 @@ class Paginate{
         $this->pagination->initialize($config);
         return $this->pagination->create_links();
     }
+
+    public function pagenav($total,$limit,$start){
+        $total_pages = ceil($total/$limit);
+        $page = $start/$limit+1;
+        $page_nav = "<div align='center' id='paginator_id'>";
+
+        // Tạo liên kết đến trang trước trang đang xem
+        if($page > 1){
+            $prev = ($page - 1);
+            $page_nav.= "<a num='".(($prev-1)*$limit)."' class='btn'><<</a>&nbsp;";
+        }
+        if($total_pages<13){
+            for($i=1;$i<=$total_pages;$i++){
+                if($i==$page){
+                    $page_nav.="<span class='btn btn-danger'>$i</span>&nbsp;";
+                }else{
+                    $page_nav.="<a num='".(($i-1)*$limit)."' class='btn'>$i</a>&nbsp;";
+                }
+            }
+        }else if($page<9){
+            for($i=1;$i<=10;$i++){
+                if($i==$page){
+                    $page_nav.="<span class='btn btn-danger'>$i</span>&nbsp;";
+                }else{
+                    $page_nav.="<a num='".(($i-1)*$limit)."' class='btn'>$i</a>&nbsp;";
+                }
+            }
+            $page_nav.="&hellip;";
+            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
+            $page_nav.="<a num='".($total_pages*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
+        }else if($page>$total_pages-8){
+            $page_nav.="<a num='0' class='btn'>1</a>&nbsp;";
+            $page_nav.="<a num='".$limit."' class='btn'>2</a>&nbsp;";
+            $page_nav.="&hellip;";
+            for($i=$total_pages-9;$i<=$total_pages;$i++){
+                if($i==$page){
+                    $page_nav.="<span class='btn btn-danger'>$i</span>&nbsp;";
+                }else{
+                    $page_nav.="<a num='".(($i-1)*$limit)."' class='btn'>$i</a>&nbsp;";
+                }
+            }
+        }else{
+            $page_nav.="<a num='0' class='btn'>1</a>&nbsp;";
+            $page_nav.="<a num='".$limit."' class='btn'>2</a>&nbsp;";
+            $page_nav.="&hellip;";
+            for($i=$page-5;$i<$page+5;$i++){
+                if($i==$page){
+                    $page_nav.="<span class='btn btn-danger'>$i</span>&nbsp;";
+                }else{
+                    $page_nav.="<a num='".(($i-1)*$limit)."' class='btn'>$i</a>&nbsp;";
+                }
+            }
+            $page_nav.="&hellip;";
+            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
+            $page_nav.="<a num='".($total_pages*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
+        }
+
+        if($page < $total_pages){
+            $next = ($page + 1);
+            $page_nav.= "<a num='".(($next-1)*$limit)."' class='btn'>>></a>";
+        }
+        $page_nav.= "</div>";
+        return $page_nav;
+    }
 }
