@@ -1,0 +1,15 @@
+.loading-img{
+    height:50px;
+    width:50px;
+    background:url(../img/loading50.gif) no-repeat;
+    margin:0 auto;
+}
+/* --------------------------------------------------------------------------------------------------------------------------------------------------
+PORTLET: PAGINATION
+-------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.pagination {border-width:2px 2px 0 2px;line-height:34px;text-align:center;height:34px;}
+.pagination.bottom {border-top:0 solid #bbb;}
+.pagination .page a {margin:0 3px;padding: 5px;}
+.pagination .page a.active {background-color:#D00; color:#FFF;-webkit-border-radius: 3px;   border-radius: 3px;text-shadow:0 -1px 0 rgba(0,0,0,0.8);}
+.pagination #widget {margin:0 5px 0 0;}

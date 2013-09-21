@@ -46,7 +46,7 @@ function Popup(){
         $('.modal').each(function(){
             $(this).find('.modal-body').css('max-height',$(window).height() - 200);
             $(this).find('.modal-body').css('max-width',$(window).width() - 200);
-            $(this).css('margin-top', -($(this).height()/2));
+            $(this).css('margin-top', ($(this).height()/2));
             $(this).css('margin-left', -($(this).width()/2));
         });
     }

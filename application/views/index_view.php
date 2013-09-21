@@ -10,6 +10,13 @@
         <link rel="Shortcut Icon" href="http://appota.com/images/appota.ico" type="image/x-icon">
         <link type="text/css" href="<?=base_url()?>public/css/bootstrap.css" rel="stylesheet"/>
         <link type="text/css" href="<?=base_url()?>public/css/bootstrap-responsive.css" rel="stylesheet"/>
+        <link type="text/css" href="<?=base_url()?>public/css/index.css" rel="stylesheet"/>
+
+        <!--Loading Javascript-->
+        <script type="text/javascript" src="<?=base_url()?>public/js/jquery.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>public/js/lib/hl.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>public/js/common.js"></script>
+        <!--end load js-->
     </head>
     <header>
         <div class="container">
@@ -29,11 +36,19 @@
         </div>
         <hr/>
         <footer>
-            <p>&copy; APPOTA <?php echo date("Y");?></p>
+            <p align="center">&copy; APPOTA <?php echo date("Y");?></p>
         </footer>
     </body>
-    <script type="text/javascript" src="<?=base_url()?>public/js/common.js"></script>
-    <script type="text/javascript" src="<?=base_url()?>public/js/jquery.js"></script>
+    <script>
+        hl({
+            baseUrl:'<?=base_url();?>',
+            templatePath: 'application/view'
+        });
+        $('body').keypress(function(e){
+            //Sự kiện ESC
+            if(e.keyCode == 27)
+                $('.close').click();
+        });
+    </script>
     <script type="text/javascript" src="<?=base_url()?>public/js/bootstrap.js"></script>
-    <script type="text/javascript" src="<?=base_url()?>public/js/lib/hl.js"></script>
 </html>
