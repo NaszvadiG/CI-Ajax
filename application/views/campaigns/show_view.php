@@ -19,6 +19,7 @@
     </div><!--form-horizontal-->
 </div><!--folder-content-->
 <script>
+    //sau do se custom theo class javascript
     $(document).ready(function(){
         $.ajax({
            type:'POST',
@@ -38,7 +39,7 @@
             }
         });
         //click btn-primary
-        $('.btn-primary').live('click',function(){
+        $('.btn-primary1').live('click',function(){
             $.ajax({
                 type:'POST',
                 cache:false,
@@ -75,14 +76,6 @@
                 success:function(result){
                     loading.hide();
                     $('#list-profiles').html(result);
-                    $('section.page a').removeClass('active');
-                    var i=0;
-                    $('section.page a').each(function(){
-                        console.log(parseInt($(this).text())*5+'//'+page[1]);
-                        if(parseInt($(this).text())*5==page[1]){
-                            $(this).addClass('active');
-                        }
-                    });
                 },
                 error:function(){
                     loading.hide();
@@ -90,5 +83,44 @@
                 }
             });
         });
+
+        //change status
+        /*$('ul.change-status li a').live('click',function(){
+            var now_status =$(this).closest('ul').attr('status');
+            var change_status = $(this).attr('for');
+            var id= $(this).closest('ul').attr('for'); console.log(id);
+            if(now_status==change_status){
+                return false;
+            }
+            popup.confirm('Bạn có muốn thay đổi trạng thái không?',function(){
+
+            });
+        });*/
     });
+    function changeStatus(id,now_status,change_status){
+        console.log(id);
+        if(now_status==change_status){
+            return false;
+        }
+        popup.confirm('Bạn có muốn thay đổi trạng thái không?',function(){
+            $.ajax({
+                type:'POST',
+                cache:false,
+                url:'<?=base_url()?>campaigns/changeStatus',
+                dataType:'JSON',
+                data:'id='+id+'&status='+change_status,
+                beforeSend:function(){
+                    loading.show();
+                },
+                success:function(result){
+                    loading.hide();
+                    popup.msg(result.msg);
+                },
+                error:function(){
+                    loading.hide();
+                    popup.msg('Có lỗi xảy ra vui lòng thử lại!');
+                }
+            });
+        });
+    }
 </script>

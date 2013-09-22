@@ -52,7 +52,20 @@
                 <td><?php echo number_format($rs->budget,2);?></td>
                 <td><?php if(isset($rs->startdate)) echo date('Y-m-d',$rs->startdate);?></td>
                 <td class="status_td"><?php if(isset($rs->enddate)) echo date('Y-m-d',$rs->enddate);?></td>
-                <td class="find_status"><?=$rs->status;?></td>
+                <td class="find_status">
+                    <div class="btn-group">
+                        <button class="btn btn-primary dropdown-toggle btn-small" data-toggle="dropdown">
+                            <?=$rs->status;?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right change-status" status="<?=$rs->status;?>" for="<?=$rs->_id;?>">
+                            <li><a for="paused" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','paused');">Stop</a></li>
+                            <li><a for="started" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','started');">Start</a></li>
+                            <li><a for="running" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','running');">Run</a></li>
+                            <li><a for="banned" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','banned');">Banned</a></li>
+                            <li><a for="delete" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','delete');">Delete</a></li>
+                        </ul>
+                    </div>
                 <!--<td><a href="<?/*=base_url()*/?>backend/users/edit/<?/*=$rs->_id;*/?>">Sửa</a></td>-->
                 <td><a href="#myModal" role="button" data-toggle="modal" class="a_edit" id="<?=$rs->_id;?>">Sửa</a></td>
             </tr>

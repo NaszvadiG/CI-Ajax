@@ -31,7 +31,7 @@ class Campaigns extends CI_Controller{
             $query['status'] = $status;
         }
         //end update
-        $limit = 100;
+        $limit = 25;
         $data['title'] = 'Quản trị Campaign';
         $total = $this->mongo_model->get_campaign('total','campaigns',$query);
         $data['total'] = $total;
@@ -61,6 +61,17 @@ class Campaigns extends CI_Controller{
         //$this->load->view('backend/master_view',$data);
         //$data['info'] = $this->mongo_model->get('campaigns',$query);
         $this->load->view('campaigns/list_view',$data);
+    }
+
+    public function changeStatus(){
+        $id = $this->input->post('id');
+        $status = $this->input->post('status');
+        $query =array('_id'=>new MongoId($id));
+        if($this->mongo_model->update('campaigns',array('$set'=>array('status'=>$status)),$query)){
+            echo json_encode(array('status'=>true,'msg'=>'Update Successfull','data'=>$query));
+        }else{
+            echo json_encode(array('status'=>false,'msg'=>'Update Failed','data'=>$query));
+        }
     }
 
 }
