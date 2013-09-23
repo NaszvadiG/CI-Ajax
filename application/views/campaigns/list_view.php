@@ -34,6 +34,25 @@
     if(count($info)>0):
         $i=0;
         foreach($info as $rs):?>
+            <?php
+                switch ($rs->status){
+                    case 'started':
+                        $class = 'btn-info';
+                        break;
+                    case 'running':
+                        $class = 'btn-success';
+                        break;
+                    case 'paused':
+                        $class = 'btn-warning';
+                        break;
+                    case 'banned':
+                        $class = 'btn-danger';
+                        break;
+                    case 'new':
+                        $class = 'btn-inverse';
+                        break;
+                }
+            ?>
             <tr class="user-<?=$rs->_id;?>" align="center">
                 <td><input type="checkbox" class="select_cb" id="<?=$rs->_id;?>"></td>
                 <td>
@@ -54,16 +73,16 @@
                 <td class="status_td"><?php if(isset($rs->enddate)) echo date('Y-m-d',$rs->enddate);?></td>
                 <td class="find_status">
                     <div class="btn-group">
-                        <button class="btn btn-primary dropdown-toggle btn-small" data-toggle="dropdown">
+                        <button class="btn <?=$class;?> dropdown-toggle btn-small" data-toggle="dropdown">
                             <?=$rs->status;?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu pull-right change-status" status="<?=$rs->status;?>" for="<?=$rs->_id;?>">
-                            <li><a for="paused" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','paused');">Stop</a></li>
-                            <li><a for="started" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','started');">Start</a></li>
-                            <li><a for="running" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','running');">Run</a></li>
-                            <li><a for="banned" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','banned');">Banned</a></li>
-                            <li><a for="delete" onclick="changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','delete');">Delete</a></li>
+                            <li><a for="paused" onclick="campaigns.changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','paused');">Stop</a></li>
+                            <li><a for="started" onclick="campaigns.changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','started');">Start</a></li>
+                            <li><a for="running" onclick="campaigns.changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','running');">Run</a></li>
+                            <li><a for="banned" onclick="campaigns.changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','banned');">Banned</a></li>
+                            <li><a for="delete" onclick="campaigns.changeStatus('<?=$rs->_id;?>','<?=$rs->status;?>','delete');">Delete</a></li>
                         </ul>
                     </div>
                 <!--<td><a href="<?/*=base_url()*/?>backend/users/edit/<?/*=$rs->_id;*/?>">Sửa</a></td>-->

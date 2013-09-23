@@ -4,7 +4,9 @@ hl = function(params){
     hl.baseUrl = params.baseUrl;
     hl.templatePath = params.templatePath;
 }
-
+hl.root = function(){
+    return hl.baseUrl;
+}
 //Build template
 hl.template = function(template, data){
     return new EJS({

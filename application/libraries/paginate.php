@@ -70,8 +70,8 @@ class Paginate{
                 }
             }
             $page_nav.="&hellip;";
-            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
-            $page_nav.="<a num='".($total_pages*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
+            $page_nav.="<a num='".(($total_pages-2)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
+            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
         }else if($page>$total_pages-8){
             $page_nav.="<a num='0' class='btn'>1</a>&nbsp;";
             $page_nav.="<a num='".$limit."' class='btn'>2</a>&nbsp;";
@@ -95,8 +95,8 @@ class Paginate{
                 }
             }
             $page_nav.="&hellip;";
-            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
-            $page_nav.="<a num='".($total_pages*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
+            $page_nav.="<a num='".(($total_pages-2)*$limit)."' class='btn'>".($total_pages-1)."</a>&nbsp;";
+            $page_nav.="<a num='".(($total_pages-1)*$limit)."' class='btn'>".$total_pages."</a>&nbsp;";
         }
 
         if($page < $total_pages){

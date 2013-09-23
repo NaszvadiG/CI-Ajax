@@ -18,13 +18,17 @@
         </div>
     </div><!--form-horizontal-->
 </div><!--folder-content-->
+<script type="text/javascript" src="<?=base_url()?>public/js/class/campaigns.js"></script>
 <script>
+    campaigns.list();
+</script>
+<!--<script>
     //sau do se custom theo class javascript
     $(document).ready(function(){
         $.ajax({
            type:'POST',
            cache:false,
-           url:'<?=base_url()?>campaigns/list_campaign',
+           url:'<?/*=base_url()*/?>campaigns/list_campaign',
            data:'name=&status=&start_from=',
             beforeSend:function(){
                 loading.show();
@@ -43,7 +47,7 @@
             $.ajax({
                 type:'POST',
                 cache:false,
-                url:'<?=base_url()?>campaigns/list_campaign',
+                url:'<?/*=base_url()*/?>campaigns/list_campaign',
                 data:'name=tien&status=&start_from=',
                 beforeSend:function(){
                     loading.show();
@@ -68,7 +72,7 @@
             $.ajax({
                 type:'POST',
                 cache:false,
-                url:'<?=base_url()?>campaigns/list_campaign',
+                url:'<?/*=base_url()*/?>campaigns/list_campaign',
                 data:'name=&status=&start_from='+start,
                 beforeSend:function(){
                     loading.show();
@@ -106,7 +110,7 @@
             $.ajax({
                 type:'POST',
                 cache:false,
-                url:'<?=base_url()?>campaigns/changeStatus',
+                url:'<?/*=base_url()*/?>campaigns/changeStatus',
                 dataType:'JSON',
                 data:'id='+id+'&status='+change_status,
                 beforeSend:function(){
@@ -123,4 +127,4 @@
             });
         });
     }
-</script>
+</script>-->

@@ -22,6 +22,7 @@ class Campaigns extends CI_Controller{
     public function list_campaign(){
         $name = $this->input->post('name');
         $status = $this->input->post('status');
+        $limit = $this->input->post('limit');
         $start_from = ($this->input->post('start_from')!='')?$this->input->post('start_from'):0;
         $query='';
         if($name){
@@ -31,7 +32,6 @@ class Campaigns extends CI_Controller{
             $query['status'] = $status;
         }
         //end update
-        $limit = 25;
         $data['title'] = 'Quản trị Campaign';
         $total = $this->mongo_model->get_campaign('total','campaigns',$query);
         $data['total'] = $total;
