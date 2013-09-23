@@ -24,12 +24,26 @@ class Campaigns extends CI_Controller{
         $status = $this->input->post('status');
         $limit = $this->input->post('limit');
         $start_from = ($this->input->post('start_from')!='')?$this->input->post('start_from'):0;
+        $from = $this->input->post('fromtime');
+        $end = $this->input->post('totime');
+        $type = $this->input->post('type');
         $query='';
         if($name){
-            $query['name']=$name;
+            $query['name']= new MongoRegex('/'.trim($name).'/i');
         }
         if($status){
             $query['status'] = $status;
+        }
+        if($from){
+            $from = strtotime($from);
+            $query['startdate'] = array('$gte'=>$from);
+        }
+        if($end){
+            $end = strtotime(trim($end).' 23:59:59');
+            $query['enddate'] = array('$lte'=>$end);
+        }
+        if($type){
+            $query['ads_type'] = $type;
         }
         //end update
         $data['title'] = 'Quản trị Campaign';

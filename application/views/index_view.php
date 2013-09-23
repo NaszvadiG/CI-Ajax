@@ -11,10 +11,13 @@
         <link type="text/css" href="<?=base_url()?>public/css/bootstrap.css" rel="stylesheet"/>
         <link type="text/css" href="<?=base_url()?>public/css/bootstrap-responsive.css" rel="stylesheet"/>
         <link type="text/css" href="<?=base_url()?>public/css/index.css" rel="stylesheet"/>
+        <link type="text/css" href="<?=base_url()?>public/css/datepicker.css" rel="stylesheet"/>
 
         <!--Loading Javascript-->
         <script type="text/javascript" src="<?=base_url()?>public/js/jquery.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>public/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="<?=base_url()?>public/js/lib/hl.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>public/js/lib/ejs.js"></script>
         <script type="text/javascript" src="<?=base_url()?>public/js/common.js"></script>
         <!--end load js-->
     </head>
@@ -42,7 +45,7 @@
     <script>
         hl({
             baseUrl:'<?=base_url();?>',
-            templatePath: 'application/view'
+            templatePath: 'application/views'
         });
         $('body').keypress(function(e){
             //Sự kiện ESC

@@ -35,6 +35,14 @@ campaigns.list = function(){
                 campaigns.start_from = start;
                 campaigns.list();
             });
+            //init datepicker
+            $(".datepicker").datepicker({
+                showOn: "button",
+                buttonImage: hl.baseUrl + "public/backend/img/icon-calendar.png",
+                buttonImageOnly: true,
+                dateFormat: 'dd/MM/yyyy',
+                selectMultiple:true
+            });
         },
         error:function(){
             loading.hide();
@@ -69,4 +77,49 @@ campaigns.changeStatus = function(id,now_status,change_status){
             }
         });
     });
+}
+
+//create new campaign function
+campaigns.create = function(){
+    console.log(hl.baseUrl+hl.templatePath);
+    popup.open('popup-campaign-form','Tạo campaign',hl.template('/campaigns/create_form_view.php',{
+        data:null
+    }),
+    [
+        {
+            title: 'Thêm',
+            fn:function(){
+                hl.submit({
+                    id:'campaign-form',
+                    service: 'campaigns/add',
+                    success: function(rs){
+                        if(!rs.status){
+                            popup.msg(rs.message);
+                        }else{
+                            popup.msg(rs.message);
+                            profiles.load();
+                            popup.close('popup-campaign-form');
+                        }
+                    }
+                });
+            }
+        },
+        {
+            title: 'Hủy bỏ',
+            fn:function(){
+                popup.close('popup-campaign-form');
+            }
+        }
+    ]);
+}
+
+//search function
+campaigns.search = function(){
+    campaigns.start_from = 0;
+    campaigns.name = $('input#name').attr('value');
+    campaigns.status = $('select#status').val();
+    campaigns.fromtime = $('#fromdate').val();
+    campaigns.totime = $('#enddate').val();
+    campaigns.type = $('#ads_type').val();
+    campaigns.list();
 }

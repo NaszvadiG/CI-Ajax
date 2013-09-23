@@ -9,9 +9,71 @@
 <div class="folder-content">
     <div class="form-horizontal">
         <div class="control-group">
-            <a class="btn btn-primary" onclick="">Thêm profiles mới</a>
+            <a class="btn btn-primary" onclick="campaigns.create();">Thêm campaign mới</a>
             <a class="btn" href="<?=base_url()?>backend">Quay về trang chính</a>
         </div><!--control-group-->
+        <div>
+            <form id="searchbox">
+                <div class="row-fluid">
+                    <div class="control-group span4">
+                        <label class="control-label" for="name">Name</label>
+                        <div class="controls">
+                            <input type="text" name="name" id="name">
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <label class="control-label" for="name">Status</label>
+                        <div class="controls">
+                            <select name="status" id="status">
+                                <option value="">All</option>
+                                <option value="new">New</option>
+                                <option value="started">Started</option>
+                                <option value="paused">Paused</option>
+                                <option value="running">Running</option>
+                                <option value="banned">Banned</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="control-group span4">
+                        <label class="control-label" for="datefrom">Start date</label>
+                        <div class="controls">
+                            <input type="text" id="fromdate" name="fromdate" class="datepicker">
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <label class="control-label" for="enddate">End date</label>
+                        <div class="controls">
+                            <input type="text" id="enddate" name="enddate" class="datepicker">
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span4">
+                        <label class="control-label" for="type">Type</label>
+                        <div class="controls">
+                            <select name="ads_type" id="ads_type">
+                                <option value="">All</option>
+                                <option value="cpim">Cost Per Impression</option>
+                                <option value="cpv">Cost Per View</option>
+                                <option value="cpc">Cost Per Click</option>
+                                <option value="cpd">Cost Per Download</option>
+                                <option value="cpi">Cost Per Install</option>
+                                <option value="cpa">Cost Per Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group span4">
+                        <label class="control-label"></label>
+                        <div class="controls">
+                            <input type="button" class="btn btn-inverse" value="Tìm kiếm" onclick="campaigns.search();">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
         <hr />
         <div id="list-profiles">
 
