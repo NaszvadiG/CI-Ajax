@@ -1,15 +1,5 @@
 <div class="folder-content">
     <div class="form-horizontal">
-        <div class="control-group">
-            <a class="btn btn-active-user" href="javascript:void(0);" id="active_user_btn">Kích hoạt campaign</a>
-            <a class="btn btn-active-user" href="javascript:void(0);" id="running_user_btn">Running campaign</a>
-            <a class="btn btn-active-user" href="javascript:void(0);" id="stop_user_btn">Stop campaign</a>
-            <a class="btn btn-banned-user" href="javascript:void(0);" id="banned_user_btn">Banned campaign</a>
-            <a class="btn btn-banned-user" href="javascript:void(0);" id="del_user_btn">Delete campaign</a>
-            <a href="#myModalsearch" role="button" data-toggle="modal" class="btn">Tìm kiếm</a>
-            <a class="btn" href="<?=base_url('backend/home')?>">Quay về trang chính</a>
-        </div><!--control-group-->
-        <hr />
         <p id="p_notification" class="msg" style="display: block;" align="center"></p>
         <div class="control-group">
             <span class="control-left">Có <b><?=$total?></b> campaign</span>
