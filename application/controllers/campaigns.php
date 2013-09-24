@@ -109,9 +109,9 @@ class Campaigns extends CI_Controller{
     public function upload(){
         $this->load->library('base');
         $size = $this->input->post("size");
-        $file = $this->base->do_upload("userfile", $size);
+        $file = $this->base->do_upload("userfile", 'image',$size);
         if (isset($file["upload_data"])) {
-            echo json_encode(array('err' => 0, 'content' => $file["upload_data"]["file_name"]));
+            echo json_encode(array('err' => 0, 'content' => $file["upload_data"]["path"].'/'.$file["upload_data"]["file_name"],'info'=>$file));
             die;
         } else {
             echo json_encode(array('err' => 1, 'content' => 'Upload Failed!','error'=>$file));
