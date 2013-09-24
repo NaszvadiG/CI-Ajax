@@ -12,14 +12,14 @@ class Base extends CI_Controller
     {
         $CI = & get_instance();
         $size = explode('x', $size);
-        $config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . '/adv.appota/public/upload/';
+        $config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/';
         $config['allowed_types'] = 'jpg|png|mp4|ipa|apk|jar|cod|jad|sis|sisx';
         $config['max_size'] = '1000000';
         $config['encrypt_name'] = TRUE;
         $CI->load->library('upload', $config);
         $CI->upload->initialize($config);
         if (!$CI->upload->do_upload()) {
-            $data = array('error' == $CI->upload->display_errors());
+            $data = array('error' == $CI->upload->display_errors(),'config'=>$config);
         } else {
             $data = array('upload_data' => $CI->upload->data());
         }
