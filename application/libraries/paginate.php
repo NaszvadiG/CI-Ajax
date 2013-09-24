@@ -45,6 +45,9 @@ class Paginate{
 
     public function pagenav($total,$limit,$start){
         $total_pages = ceil($total/$limit);
+        if($total_pages==1){
+            return '';
+        }
         $page = $start/$limit+1;
         $page_nav = "<div align='center' id='paginator_id'>";
 
