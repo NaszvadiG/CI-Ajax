@@ -104,6 +104,7 @@ hl.submitWithFile = function(params){
             }
         }
         catch(err){
+            console.log(err);
             if(params.loading)
                 loading.hide();
             popup.msg('Có lỗi xảy ra trong quá trình truyền dữ liệu, xin hãy kiểm tra lại kết nối mạng! '+err);
