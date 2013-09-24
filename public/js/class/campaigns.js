@@ -16,7 +16,7 @@ campaigns.fromtime = '';
 campaigns.totime = '';
 
 //declare method of campaigns
-campaigns.list = function(){
+campaigns.list = function(load){
     $.ajax({
         type:'POST',
         cache:false,
@@ -25,7 +25,9 @@ campaigns.list = function(){
             +'&limit='+campaigns.limit+'&type='+campaigns.type+'&fromtime='+campaigns.fromtime
             +'&totime='+campaigns.totime,
         beforeSend:function(){
-            loading.show();
+            if(!load){
+                loading.show();
+            }
         },
         success:function(result){
             loading.hide();
@@ -69,7 +71,7 @@ campaigns.changeStatus = function(id,now_status,change_status){
             success:function(result){
                 loading.hide();
                 popup.msg(result.msg);
-                campaigns.list();
+                campaigns.list(true);
             },
             error:function(){
                 loading.hide();
@@ -148,7 +150,7 @@ campaigns.upload = function(url,id) {
                 else {
                     $('.data').val(data.content);
                     popup.msg('upload successful');
-                    $('#show_image').html("<img src='"+hl.baseUrl+"public/upload/"+data.content+"'>").parent().show();
+                    $('#show_image').html("<img src='"+data.content+"'>").parent().show();
                 }
             }
         });
