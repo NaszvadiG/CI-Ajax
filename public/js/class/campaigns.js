@@ -93,11 +93,12 @@ campaigns.create = function(){
                     id:'campaign-form',
                     service: 'campaigns/add',
                     success: function(rs){
+                        console.log(rs);
                         if(!rs.status){
                             popup.msg(rs.message);
                         }else{
                             popup.msg(rs.message);
-                            profiles.load();
+                            campaigns.list();
                             popup.close('popup-campaign-form');
                         }
                     }
@@ -122,4 +123,35 @@ campaigns.search = function(){
     campaigns.totime = $('#enddate').val();
     campaigns.type = $('#ads_type').val();
     campaigns.list();
+}
+
+//function upload
+campaigns.upload = function(url,id) {
+    console.log(url+id);
+    $(document).ready(function () {
+        $.ajaxFileUpload({
+//            url: "<?=base_url()?>campaign/upload_file",
+            url: url,
+            secureuri: false,
+            fileElementId: id,
+//            fileElementId: "userfile",
+            data: {"size": "200x200"},
+            dataType: "json",
+            beforeSend:function(){
+                alert('ok');
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.err == 1) {
+                    alert(data.content);
+                }
+                else {
+                    $('.data').val(data.content);
+                    popup.msg('upload successful');
+                    $('#show_image').html("<img src='"+hl.baseUrl+"public/upload/"+data.content+"'>").parent().show();
+                }
+            }
+        });
+        return false;
+    }); //ket thuc upload file
 }
