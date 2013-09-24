@@ -66,11 +66,16 @@
             <div class="control-group">
                 <label class="control-label">Logo</label>
                 <div class="controls">
-                    <input type="file" class="input-xlarge" id="filedata" name="filedata" onchange="campaigns.upload('campaigns/upload','filedata');"/>
+                    <input type="file" class="input-xlarge" id="userfile" name="userfile" onchange="campaigns.upload('campaigns/upload','userfile');"/>
                     <span><%=(data&&data.ads_content.logo!="")?data.ads_content.logo:"" %></span>
                 </div>
             </div>
+            <div class="control-group" style="display: none;">
+                <label class="control-label"></label>
+                <div class="controls" id="show_image">
 
+                </div>
+            </div>
             <div class="control-group">
                 <label class="control-label">Link</label>
                 <div class="controls">
