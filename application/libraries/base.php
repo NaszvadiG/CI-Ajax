@@ -3,16 +3,27 @@ class Base extends CI_Controller
 {
 
     /**
-     * Function upload
      * @param $userfile
-     * @param $size
+     * @param $type thu muc de chua file
+     * @param $size kich thuoc anh
      * @return array
      */
-    public function do_upload($userfile, $size)
+    public function do_upload($userfile,$type, $size)
     {
         $CI = & get_instance();
         $size = explode('x', $size);
-        $config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . '/public/upload/';
+        $oldMask = umask();
+        umask(0);
+        $cur = date('mY',microtime(true));
+        $path = './public/upload/'.$type.'/'.$cur;
+        if(!is_dir('./public/upload/'.$type)){
+            mkdir('./public/upload/'.$type);
+        }
+        if(!is_dir($path)){
+            mkdir($path);
+        }
+        umask($oldMask);
+        $config['upload_path'] = $path;
         $config['allowed_types'] = 'jpg|png|mp4|ipa|apk|jar|cod|jad|sis|sisx';
         $config['max_size'] = '1000000';
         $config['encrypt_name'] = TRUE;
@@ -25,6 +36,7 @@ class Base extends CI_Controller
         }
         #BEGIN RESIZE IMAGE
         if (isset($data["upload_data"])) {
+            $data['upload_data']['path'] = 'public/upload/'.$type.'/'.$cur;
             $img_array = array();
             $img_array['image_library'] = 'gd2';
             $img_array['maintain_ratio'] = TRUE;
