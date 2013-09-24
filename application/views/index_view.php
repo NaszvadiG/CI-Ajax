@@ -19,6 +19,7 @@
         <script type="text/javascript" src="<?=base_url()?>public/js/lib/hl.js"></script>
         <script type="text/javascript" src="<?=base_url()?>public/js/lib/ejs.js"></script>
         <script type="text/javascript" src="<?=base_url()?>public/js/common.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>public/js/ajaxfileupload.js"></script>
         <!--end load js-->
     </head>
     <header>
@@ -45,7 +46,8 @@
     <script>
         hl({
             baseUrl:'<?=base_url();?>',
-            templatePath: 'application/views'
+            templatePath: 'assets/template'
+            //templatePath: 'application/views'
         });
         $('body').keypress(function(e){
             //Sự kiện ESC

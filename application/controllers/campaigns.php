@@ -88,5 +88,35 @@ class Campaigns extends CI_Controller{
         }
     }
 
+    public function add(){
+        if($this->input->is_ajax_request()){
+            $name = $this->input->post('name');
+            $type = $this->input->post('ads_type');
+            $start = $this->input->post('start');
+            $end = $this->input->post('end');
+            $daily_budget = $this->input->post('daily-budget-txt');
+            $budget = $this->input->post('budget-txt');
+            $min = $this->input->post('min-cost-txt');
+            $max = $this->input->post('max-cost-txt');
+            $link = $this->input->post('min-cost-txt');
+
+            echo json_encode(array('status'=>false,'message'=>'ok nhoe'));
+            die;
+        }
+
+    }
+
+    public function upload(){
+        $this->load->library('base');
+        $size = $this->input->post("size");
+        $file = $this->base->do_upload("userfile", $size);
+        if (isset($file["upload_data"])) {
+            echo json_encode(array('err' => 0, 'content' => $file["upload_data"]["file_name"]));
+            die;
+        } else {
+            echo json_encode(array('err' => 1, 'content' => 'Upload Failed!','error'=>$file));
+            die;
+        }
+    }
 }
 ?>
