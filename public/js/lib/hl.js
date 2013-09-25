@@ -116,7 +116,18 @@ hl.parseTime = function(obj){
     var dd = new Date(parseInt(obj*1000));
     return dd.getDate() + "/" + (dd.getMonth() + 1) + "/" + dd.getFullYear() + " " + dd.getHours() + ":" + dd.getMinutes();
 }
-
+hl.parseDayTime = function(obj){
+    var dd = new Date(parseInt(obj*1000));
+    var day = dd.getDate();
+    var month = dd.getMonth()+1;
+    if(day<10){
+        day = '0'+day;
+    }
+    if(month<10){
+        month = '0'+month;
+    }
+    return month + "/" + day + "/" + dd.getFullYear();
+}
 Number.prototype.toMoney = function(decimals, decimal_sep, thousands_sep){
     var n = this,
         c = isNaN(decimals) ? 2 : Math.abs(decimals), //if decimal is zero we must take it, it means user does not want to show any decimal

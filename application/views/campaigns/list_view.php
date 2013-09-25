@@ -76,7 +76,7 @@
                         </ul>
                     </div>
                 <!--<td><a href="<?/*=base_url()*/?>backend/users/edit/<?/*=$rs->_id;*/?>">Sửa</a></td>-->
-                <td><a href="#myModal" role="button" data-toggle="modal" class="a_edit" id="<?=$rs->_id;?>">Sửa</a></td>
+                <td><span class="btn btn-info" onclick="campaigns.edit('<?=$rs->_id;?>')">Sửa</span></td>
             </tr>
             <?php $i++;
         endforeach; else:

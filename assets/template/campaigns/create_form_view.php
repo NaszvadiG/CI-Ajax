@@ -29,13 +29,13 @@
                 <label class="control-label">Ngày bắt đầu:</label>
 
                 <div class="controls">
-                    <input id="start" type="text" class="input-xlarge datepicker" name="start" value="<%= (data&&data.startdate!='')?hl.parseTime(data.startdate):'' %>"/>
+                    <input id="startdate" type="text" class="input-xlarge datepicker" name="start" value="<%= (data&&data.startdate!='')?hl.parseDayTime(data.startdate):'' %>"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Ngày kết thúc:</label>
                 <div class="controls">
-                    <input id="end" type="text" class="input-xlarge datepicker" name="end" value="<%=(data&&data.enddate!='')?hl.parseTime(data.enddate):'' %>"/>
+                    <input id="enddate" type="text" class="input-xlarge datepicker" name="end" value="<%= (data&&data.enddate!='')?hl.parseDayTime(data.enddate):'' %>"/>
                 </div>
             </div>
             <div class="control-group">
@@ -85,3 +85,8 @@
         </form>
     </div>
 </div>
+<style>
+    .datepicker{
+        z-index: 9999999;
+    }
+</style>

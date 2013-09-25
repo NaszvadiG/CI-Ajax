@@ -38,13 +38,7 @@ campaigns.list = function(load){
                 campaigns.list();
             });
             //init datepicker
-            $(".datepicker").datepicker({
-                showOn: "button",
-                buttonImage: hl.baseUrl + "public/backend/img/icon-calendar.png",
-                buttonImageOnly: true,
-                dateFormat: 'dd/MM/yyyy',
-                selectMultiple:true
-            });
+            $(".datepicker").datepicker();
         },
         error:function(){
             loading.hide();
@@ -83,7 +77,6 @@ campaigns.changeStatus = function(id,now_status,change_status){
 
 //create new campaign function
 campaigns.create = function(){
-    console.log(hl.baseUrl+hl.templatePath);
     popup.open('popup-campaign-form','Tạo campaign',hl.template('/campaigns/create_form_view.php',{
         data:null
     }),
@@ -95,6 +88,7 @@ campaigns.create = function(){
                     id:'campaign-form',
                     service: 'campaigns/add',
                     success: function(rs){
+
                         console.log(rs);
                         if(!rs.status){
                             popup.msg(rs.message);
@@ -114,6 +108,7 @@ campaigns.create = function(){
             }
         }
     ]);
+    $('.datepicker').datepicker();
 }
 
 //search function
@@ -156,4 +151,50 @@ campaigns.upload = function(url,id) {
         });
         return false;
     }); //ket thuc upload file
+}
+
+//edit campaign
+campaigns.edit = function(id){
+    hl.ajax({
+        service:'campaigns/get',
+        data:{
+            id:id
+        },
+        success:function(result){
+            console.log(result);
+            popup.open('popup-edit-campaign','Cập nhật campaign',hl.template('/campaigns/create_form_view.php',{
+                data:result.data
+            }),
+                [
+                    {
+                        title: 'Thêm',
+                        fn:function(){
+                            hl.submit({
+                                id:'campaign-form',
+                                service: 'campaigns/add',
+                                success: function(rs){
+                                    console.log(rs);
+                                    if(!rs.status){
+                                        popup.msg(rs.message);
+                                    }else{
+                                        popup.msg(rs.message);
+                                        campaigns.list();
+                                        popup.close('popup-edit-campaign');
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    {
+                        title: 'Hủy bỏ',
+                        fn:function(){
+                            popup.close('popup-edit-campaign');
+                        }
+                    }
+                ]
+            );
+            popup.resetPos();
+            $('input.datepicker').datepicker();
+        }
+    });
 }

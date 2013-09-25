@@ -90,18 +90,28 @@ class Campaigns extends CI_Controller{
 
     public function add(){
         if($this->input->is_ajax_request()){
-            $name = $this->input->post('name');
-            $type = $this->input->post('ads_type');
-            $start = $this->input->post('start');
-            $end = $this->input->post('end');
-            $daily_budget = $this->input->post('daily-budget-txt');
-            $budget = $this->input->post('budget-txt');
-            $min = $this->input->post('min-cost-txt');
-            $max = $this->input->post('max-cost-txt');
-            $link = $this->input->post('min-cost-txt');
+            $data['name'] = $this->input->post('name');
+            $data['type'] = $this->input->post('ads_type');
+            $data['start'] = $this->input->post('start');
+            $data['end'] = $this->input->post('end');
+            $data['daily_budget'] = $this->input->post('daily-budget-txt');
+            $data['budget'] = $this->input->post('budget-txt');
+            $data['min'] = $this->input->post('min-cost-txt');
+            $data['max'] = $this->input->post('max-cost-txt');
+            $data['link'] = $this->input->post('min-cost-txt');
 
-            echo json_encode(array('status'=>false,'message'=>'ok nhoe'));
-            die;
+            //validate data
+            $validate = array();
+            if($data['name'] == ''){
+                $validate['name'] = 'Tên không được bỏ trống';
+            }
+            if($data['start'] == ''){
+                $validate['start'] = 'Tên không được bỏ trống';
+            }
+            if(count($validate) > 0){
+                echo json_encode(new Result(false, null, $validate));
+                die;
+            }
         }
 
     }
@@ -116,6 +126,14 @@ class Campaigns extends CI_Controller{
         } else {
             echo json_encode(array('err' => 1, 'content' => 'Upload Failed!','error'=>$file));
             die;
+        }
+    }
+
+    public function get(){
+        if($this->input->is_ajax_request()){
+            $id = $this->input->get('id');
+            $data = $this->mongo_model->get('campaigns',array('_id'=>new MongoId($id)));
+            echo json_encode(array('data'=>$data[0]));
         }
     }
 }
