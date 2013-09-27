@@ -11,6 +11,7 @@ class Campaigns extends CI_Controller{
         parent::__construct();
         $this->load->model('mongo_model');
         $this->load->library('paginate');
+        $this->session->set_userdata(array('advertiser_id'=>new MongoId('51b8335d49a672255d000000'),'currency'=>'usd'));
     }
 
     public function show(){
@@ -91,26 +92,169 @@ class Campaigns extends CI_Controller{
     public function add(){
         if($this->input->is_ajax_request()){
             $data['name'] = $this->input->post('name');
-            $data['type'] = $this->input->post('ads_type');
-            $data['start'] = $this->input->post('start');
-            $data['end'] = $this->input->post('end');
+            $data['ads_type'] = $this->input->post('ads_type');
+            $data['startdate'] = $this->input->post('start');
+            $data['enddate'] = $this->input->post('end');
             $data['daily_budget'] = $this->input->post('daily-budget-txt');
             $data['budget'] = $this->input->post('budget-txt');
-            $data['min'] = $this->input->post('min-cost-txt');
-            $data['max'] = $this->input->post('max-cost-txt');
-            $data['link'] = $this->input->post('min-cost-txt');
+            $data['min_cost'] = $this->input->post('min-cost-txt');
+            $data['max_cost'] = $this->input->post('max-cost-txt');
+            $data['ads_content']['logo'] = $this->input->post('logo_link');
+            $data['ads_content']['url'] = $this->input->post('link-txt');
+            $data['advertiser_id']= $this->input->post('advertiser_id_hidden');;
+            $data['status'] = 'new';
+            $data['currency'] = $this->session->userdata('currency');
+            $data['profiles'] = array();
+            $min = $this->input->post('min');
+            $max = $this->input->post('max');
 
             //validate data
             $validate = array();
+            if($data['advertiser_id']==''){
+                $validate['ad_id_input']= 'Bạn cần chọn advertiser id cho campaign';
+            }
             if($data['name'] == ''){
                 $validate['name'] = 'Tên không được bỏ trống';
             }
-            if($data['start'] == ''){
-                $validate['start'] = 'Tên không được bỏ trống';
+            if($data['startdate'] == ''){
+                $validate['start'] = 'Thời gian bắt đầu không được bỏ trống';
+            }else{
+                $data['startdate'] = strtotime($data['startdate']);
+                if($data['startdate']<strtotime(date('m/d/Y'))){
+                    $validate['start'] = 'Thời gian bắt đầu phải lớn hơn thời gian hiện tại '.date('m/d/Y');
+                }
+            }
+            if($data['enddate']==''){
+                $validate['end'] = 'Thời gian kết thúc không được bỏ trống';
+
+            }else{
+                $data['enddate'] = strtotime($data['enddate']);
+                if($data['enddate']< $data['startdate']){
+                    $validate['end'] = 'Thời gian kết thúc phải lớn hơn hoặc bằng thời gian bắt đầu ';
+                }
+            }
+            if($data['daily_budget']==''){
+                $validate['daily-budget-txt'] = 'Daily budget không được bỏ trống';
+            }else{
+                if(!preg_match('/^[\d\.]+$/',$data['daily_budget'])){
+                    $validate['daily-budget-txt'] = 'Daily budget phải ở định dạng số';
+                }else if($data['daily_budget']<$min){
+                    $validate['daily-budget-txt'] = 'Daily budget phải lớn hơn min cost ('.$min.')';
+                }
+            }
+            if($data['budget']==''){
+                $validate['budget-txt'] = 'Budget không được bỏ trống';
+            }else{
+                if(!preg_match('/^[\d\.]+$/',$data['budget'])){
+                    $validate['budget-txt'] = 'Budget phải ở định dạng số';
+                }else if($data['budget']<$data['daily_budget']){
+                    $validate['budget-txt'] = 'Budget phải lớn hơn daily budget';
+                }
+            }
+            if($data['min_cost']==''||!preg_match('/^[\d\.]+$/',$data['min_cost'])){
+                $validate['min-cost-txt'] = 'Min cost không được bỏ trống và ở dạng số';
+            }else{
+                if($data['min_cost']<$min){
+                    $validate['min-cost-txt'] = 'Min cost phải bằng hoặc lớn hơn '.$min;
+                }
+            }
+            if($data['max_cost']==''){
+                $validate['max-cost-txt'] = 'Max cost không được bỏ trống';
+            }else{
+                if($data['max_cost']<$max){
+                    $validate['min-cost-txt'] = 'Min cost phải bằng hoặc lớn hơn '.$min;
+                }
             }
             if(count($validate) > 0){
                 echo json_encode(new Result(false, null, $validate));
                 die;
+            }else{
+                if($this->mongo_model->insert('campaigns',$data)){
+                    echo json_encode(array('status'=>true,'message'=>'Tạo campaign thành công!'));
+                    die;
+                }
+            }
+        }
+
+    }
+    public function edit(){
+        if($this->input->is_ajax_request()){
+            $data['ads_type'] = $this->input->post('ads_type');
+            $data['startdate'] = $this->input->post('start');
+            $data['enddate'] = $this->input->post('end');
+            $data['daily_budget'] = $this->input->post('daily-budget-txt');
+            $data['budget'] = $this->input->post('budget-txt');
+            $data['min_cost'] = $this->input->post('min-cost-txt');
+            $data['max_cost'] = $this->input->post('max-cost-txt');
+            $data['ads_content']['logo'] = $this->input->post('logo_link');
+            $data['ads_content']['url'] = $this->input->post('link-txt');
+            $campaign_id= $this->input->post('campaign_id');
+            $data['profiles'] = array();
+            $min = $this->input->post('min');
+            $max = $this->input->post('max');
+
+            //validate data
+            $validate = array();
+            if(!$campaign_id){
+                echo json_encode(array('status'=>true,'message'=>'Cập nhật thất bại, không thấy campaign_id'));
+                die;
+            }
+            $data['startdate'] = strtotime($data['startdate']);
+            if($data['enddate']==''){
+                $validate['end'] = 'Thời gian kết thúc không được bỏ trống';
+
+            }else{
+                $data['enddate'] = strtotime($data['enddate']);
+                if($data['enddate']< $data['startdate']){
+                    $validate['end'] = 'Thời gian kết thúc phải lớn hơn hoặc bằng thời gian bắt đầu ';
+                }
+                if($data['enddate']<strtotime(date('m/d/Y'))){
+                    $validate['end'] = 'Thời gian kết thúc phải lớn hơn hoặc bằng thời gian hiện tại ';
+                }
+            }
+            if($data['daily_budget']==''){
+                $validate['daily-budget-txt'] = 'Daily budget không được bỏ trống';
+            }else{
+                if(!preg_match('/^[\d\.]+$/',$data['daily_budget'])){
+                    $validate['daily-budget-txt'] = 'Daily budget phải ở định dạng số';
+                }else if($data['daily_budget']<$min){
+                    $validate['daily-budget-txt'] = 'Daily budget phải lớn hơn min cost ('.$min.')';
+                }
+            }
+            if($data['budget']==''){
+                $validate['budget-txt'] = 'Budget không được bỏ trống';
+            }else{
+                if(!preg_match('/^[\d\.]+$/',$data['budget'])){
+                    $validate['budget-txt'] = 'Budget phải ở định dạng số';
+                }else if($data['budget']<$data['daily_budget']){
+                    $validate['budget-txt'] = 'Budget phải lớn hơn daily budget';
+                }
+            }
+            if($data['min_cost']==''||!preg_match('/^[\d\.]+$/',$data['min_cost'])){
+                $validate['min-cost-txt'] = 'Min cost không được bỏ trống và ở dạng số';
+            }else{
+                if((float)$data['min_cost']<(float)$min){
+                    $validate['min-cost-txt'] = 'Min cost phải bằng hoặc lớn hơn '.$min;
+                }
+            }
+            if($data['max_cost']==''){
+                $validate['max-cost-txt'] = 'Max cost không được bỏ trống';
+            }else{
+                if($data['max_cost']<$max){
+                    $validate['max-cost-txt'] = 'Max cost phải bằng hoặc lớn hơn '.$max;
+                }
+                if($data['max_cost']<$data['min_cost']){
+                    $validate['max-cost-txt'] = 'Max cost phải bằng hoặc lớn hơn Min cost ('.$data['min_cost'].')';
+                }
+            }
+            if(count($validate) > 0){
+                echo json_encode(new Result(false, null, $validate));
+                die;
+            }else{
+                if($this->mongo_model->update('campaigns',array('$set'=>$data),array('_id'=>new MongoId($campaign_id)))){
+                    echo json_encode(array('status'=>true,'message'=>'Cập nhật campaign thành công!'));
+                    die;
+                }
             }
         }
 
@@ -134,6 +278,35 @@ class Campaigns extends CI_Controller{
             $id = $this->input->get('id');
             $data = $this->mongo_model->get('campaigns',array('_id'=>new MongoId($id)));
             echo json_encode(array('data'=>$data[0]));
+        }
+    }
+
+    /**
+     * get min max cost
+     */
+    public function min_max_cost(){
+        $currency = $this->session->userdata('currency');; //echo $currency;
+        $type = $this->input->post('type'); //echo $type;
+        $data = unserialize(file_get_contents('./log/cost/'.$currency.'_'.$type));
+        $data['currency'] = $currency;
+        echo json_encode($data);
+    }
+
+    public function getAdvertiser(){
+        if($this->input->is_ajax_request()){
+            $id = $this->input->get('id');
+            if($id==null){
+                echo json_encode(array('status'=>false,'msg'=>'Bạn cần nhập advertiser id'));
+                die;
+            }
+            $info = $this->mongo_model->get_select('advertisers','info.name',array('_id'=>new MongoId($id)));
+            if(count($info)){
+                echo json_encode(array('status'=>true,'msg'=>$info[0]->info['name']));
+                die;
+            }else{
+                echo json_encode(array('status'=>false,'msg'=>'Không tìm thấy advertiser id tương ứng'));
+                die;
+            }
         }
     }
 }
