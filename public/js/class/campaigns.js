@@ -88,7 +88,6 @@ campaigns.create = function(){
                     id:'campaign-form',
                     service: 'campaigns/add',
                     success: function(rs){
-
                         console.log(rs);
                         if(!rs.status){
                             popup.msg(rs.message);
@@ -109,6 +108,24 @@ campaigns.create = function(){
         }
     ]);
     $('.datepicker').datepicker();
+    $('#popCmd_popup-campaign-form_0').addClass('btn-primary');
+    //function get advertiser
+    $('#search_adv').click(function(){
+        hl.ajax({
+            'service':'campaigns/getAdvertiser',
+            data:{
+                id:$('#advertiser').val()
+            },
+            success:function(result){
+                if(result.status){
+                    $('.advertiser-name').attr('value',result.msg);
+                    $('#advertiser_id_hidden').attr('value',$('#advertiser').val());
+                }else{
+                    popup.msg(result.msg);
+                }
+            }
+        });
+    });
 }
 
 //search function
@@ -140,11 +157,11 @@ campaigns.upload = function(url,id) {
             success: function (data) {
                 console.log(data);
                 if (data.err == 1) {
-                    alert(data.content);
+                    popup.msg(data.content);
                 }
                 else {
                     $('.data').val(data.content);
-                    popup.msg('upload successful');
+                    $('#logo_input').val(hl.baseUrl+data.content);
                     $('#show_image').html("<img src='"+data.content+"'>").parent().show();
                 }
             }
@@ -162,6 +179,7 @@ campaigns.edit = function(id){
         },
         success:function(result){
             console.log(result);
+
             popup.open('popup-edit-campaign','Cập nhật campaign',hl.template('/campaigns/create_form_view.php',{
                 data:result.data
             }),
@@ -171,7 +189,7 @@ campaigns.edit = function(id){
                         fn:function(){
                             hl.submit({
                                 id:'campaign-form',
-                                service: 'campaigns/add',
+                                service: 'campaigns/edit',
                                 success: function(rs){
                                     console.log(rs);
                                     if(!rs.status){
@@ -186,15 +204,45 @@ campaigns.edit = function(id){
                         }
                     },
                     {
-                        title: 'Hủy bỏ',
+                        title: 'Đóng',
                         fn:function(){
                             popup.close('popup-edit-campaign');
                         }
                     }
                 ]
             );
+            $('#slt_type').val(result.data.ads_type);
             popup.resetPos();
+            $('#startdate').removeClass('datepicker');//ko cho sua ngay bat dau
             $('input.datepicker').datepicker();
+            if(result.data&&result.data.status=='banned'){
+                $('a#popCmd_popup-edit-campaign_0').hide();
+                popup.msg('Campaign đã bị banned nên không cập nhật được');
+            }
+
         }
     });
+}
+
+//function get min cost and max cost from file
+campaigns.readCost = function(type){
+    var data = 'type='+type;
+    $.ajax({
+        url:'campaigns/min_max_cost',
+        type:'POST',
+        cache:false,
+        data:data,
+        success:function(string){
+            var result = JSON.parse(string);
+            $('span#span-min-cost').text('(Min cost must be greater or equal '+result.min+' '+result.currency+')').attr('name',result.min);
+            $('span#span-max-cost').text('(Max cost must be greater or equal '+result.max+' '+result.currency+')').attr('name',result.max);
+            $('input#min').attr('value',result.min);
+            $('input#max').attr('value',result.max);
+        }
+    });
+    if(type=='cpi'||type=='cpa'){
+        $('#choose-logo').show();
+    }else{
+        $('#choose-logo').hide();
+    }
 }

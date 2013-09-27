@@ -62,6 +62,8 @@ hl.submit = function(params){
                     popup.msg(result.message);
                 }
                 popup.resetPos();
+                shadow.show();
+                console.log(result);
             }
         }, 
         service: params.service, 
