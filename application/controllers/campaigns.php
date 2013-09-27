@@ -82,10 +82,18 @@ class Campaigns extends CI_Controller{
         $id = $this->input->post('id');
         $status = $this->input->post('status');
         $query =array('_id'=>new MongoId($id));
-        if($this->mongo_model->update('campaigns',array('$set'=>array('status'=>$status)),$query)){
-            echo json_encode(array('status'=>true,'msg'=>'Update Successfull','data'=>$query));
+        if($status=='delete'){
+            if($this->mongo_model->delete('campaigns',$query)){
+                echo json_encode(array('status'=>true,'msg'=>'Delete campaign Successfull','data'=>$query));
+            }else{
+                echo json_encode(array('status'=>false,'msg'=>'Delete campaign Failed','data'=>$query));
+            }
         }else{
-            echo json_encode(array('status'=>false,'msg'=>'Update Failed','data'=>$query));
+            if($this->mongo_model->update('campaigns',array('$set'=>array('status'=>$status)),$query)){
+                echo json_encode(array('status'=>true,'msg'=>'Update Successfull','data'=>$query));
+            }else{
+                echo json_encode(array('status'=>false,'msg'=>'Update Failed','data'=>$query));
+            }
         }
     }
 

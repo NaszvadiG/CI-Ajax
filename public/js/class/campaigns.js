@@ -52,6 +52,10 @@ campaigns.changeStatus = function(id,now_status,change_status){
     if(now_status==change_status){
         return false;
     }
+    if(change_status=='delete'&&now_status!='new'){
+        popup.msg('Campaign đã được chạy, bạn không thể xóa được');
+        return false;
+    }
     popup.confirm('Bạn có muốn thay đổi trạng thái không?',function(){
         $.ajax({
             type:'POST',
